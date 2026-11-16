@@ -27,6 +27,8 @@ jobs:
           cat .relay-import.part01 .relay-import.part02 .relay-import.part03 .relay-import.part04 .relay-import.part05 | base64 --decode > /tmp/relay-starter.zip
           unzip -q /tmp/relay-starter.zip -d /tmp/relay-starter
           cp -a /tmp/relay-starter/relay-by-asivaro-starter/. .
+          # The bootstrap token cannot add workflow files; add web-ci.yml separately after import.
+          rm -f .github/workflows/web-ci.yml
           rm -f .relay-import.part01 .relay-import.part02 .relay-import.part03 .relay-import.part04 .relay-import.part05 .relay-import.ready
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
