@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - ".relay-import.zip.b64"
+      - ".relay-import.ready"
 
 permissions:
   contents: write
@@ -21,14 +21,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [[ ! -f .relay-import.zip.b64 ]]; then
-            echo "No starter archive found; nothing to import."
-            exit 0
-          fi
-          base64 --decode .relay-import.zip.b64 > /tmp/relay-starter.zip
+          for part in .relay-import.part01 .relay-import.part02 .relay-import.part03 .relay-import.part04 .relay-import.part05; do
+            test -s "$part"
+          done
+          cat .relay-import.part01 .relay-import.part02 .relay-import.part03 .relay-import.part04 .relay-import.part05 | base64 --decode > /tmp/relay-starter.zip
           unzip -q /tmp/relay-starter.zip -d /tmp/relay-starter
           cp -a /tmp/relay-starter/relay-by-asivaro-starter/. .
-          rm -f .relay-import.zip.b64
+          rm -f .relay-import.part01 .relay-import.part02 .relay-import.part03 .relay-import.part04 .relay-import.part05 .relay-import.ready
           rm -f .github/workflows/relay-import.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
