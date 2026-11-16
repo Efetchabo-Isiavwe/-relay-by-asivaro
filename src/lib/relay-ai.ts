@@ -92,9 +92,12 @@ Rules:
   }
 
   const rawSource = result.response.inferenceSource;
-  const inferenceSource: InferenceSource = rawSource === 'ON_DEVICE' || rawSource === 'IN_CLOUD'
-    ? rawSource
-    : 'UNKNOWN';
+  // The Firebase JS SDK's InferenceSource values are lowercase enum values.
+  const inferenceSource: InferenceSource = rawSource === 'on_device'
+    ? 'ON_DEVICE'
+    : rawSource === 'in_cloud'
+      ? 'IN_CLOUD'
+      : 'UNKNOWN';
 
   callbacks.onStatus?.(`Analysis complete. Actual inference source: ${inferenceSource}.`);
   return {
