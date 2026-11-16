@@ -106,17 +106,22 @@ This starter includes the first web interface and Firebase AI Logic integration 
 
 The Firestore and Storage rules in this repository deny all access by default. Do not relax them globally. Add organisation-scoped, role-aware rules before enabling data persistence or uploads.
 
-## 7. GitHub repository
+## 7. GitHub repository and Codespaces
 
-After the app builds locally:
+The public repository is already initialized:
 
-```powershell
-git init
-git add .
-git commit -m "Initial RELAY web hybrid AI scaffold"
-```
+https://github.com/Efetchabo-Isiavwe/-relay-by-asivaro
 
-Create a public GitHub repository named `-relay-by-asivaro` and push the initial commit. Check `.gitignore` and ensure `.env.local` is not staged.
+To open the cloud development environment:
+
+1. Open the repository.
+2. Select **Code → Codespaces → Create codespace on main**.
+3. Choose the smallest included/free machine type available to your account (prefer 2 cores / 8 GB for normal development).
+4. Before creating it, confirm GitHub shows the machine is covered by included usage. Do not select paid overages or a paid machine.
+5. Wait for the Dev Container setup to finish. The RELAY web preview is forwarded on port 5173.
+6. The remote Chrome desktop is exposed on private port 6080 only for a temporary local-AI experiment.
+
+If a suitable 4-core / 16-GB Codespace is not within your included allowance, do not create it. Keep developing in the smaller environment and defer the Chrome local-model experiment until a free/approved environment is available.
 
 ## 8. Android and iOS follow-on
 
