@@ -19,9 +19,12 @@ const hasFirebaseConfig = Boolean(
   !firebaseConfig.apiKey.includes('replace_me'),
 );
 
-const hasAppCheckSiteKey = Boolean(
-  import.meta.env.VITE_RECAPTCHA_V3_SITE_KEY &&
-  !import.meta.env.VITE_RECAPTCHA_V3_SITE_KEY.includes('replace_with'),
+// A real reCAPTCHA key is required for production. In local development,
+ // Firebase's App Check debug token is used instead, so no reCAPTCHA site key
+ // needs to be created merely to test Firebase AI Logic.
+const appCheckSiteKey = import.meta.env.VITE_RECAPTCHA_V3_SITE_KEY;
+const hasAppCheckSiteKey = import.meta.env.DEV || Boolean(
+  appCheckSiteKey && !appCheckSiteKey.includes('replace_with'),
 );
 
 let app: FirebaseApp | null = null;
@@ -40,7 +43,13 @@ if (hasFirebaseConfig && hasAppCheckSiteKey) {
     }
 
     initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider(import.meta.env.VITE_RECAPTCHA_V3_SITE_KEY),
+      // In development the debug-token mechanism overrides the attestation
+      // provider. The placeholder is never used to attest a production app.
+      provider: new ReCaptchaV3Provider(
+        appCheckSiteKey && !appCheckSiteKey.includes('replace_with')
+          ? appCheckSiteKey
+          : 'debug-only-placeholder',
+      ),
       isTokenAutoRefreshEnabled: true,
     });
 
