@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Temporary deny-by-default starter rules.
+    // Replace with organisation-scoped, role-aware rules before enabling evidence uploads.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
