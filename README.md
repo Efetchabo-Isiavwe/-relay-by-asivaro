@@ -16,7 +16,7 @@ Use the prepared GitHub Codespaces environment instead of installing a full tool
 
 Install:
 - Google Antigravity for Windows x64: https://antigravity.google/download
-- Node.js 22 LTS: https://nodejs.org/en/download
+- Node.js 24 LTS (24.12+): https://nodejs.org/en/download
 - Git for Windows: https://git-scm.com/downloads/win
 - Google Chrome desktop: https://www.google.com/chrome/
 
@@ -36,7 +36,7 @@ npm install
 
 If the skills installer asks which Firebase skills to install, select `firebase-ai-logic-basics` and `firebase-app-check` for the first milestone. Add `firebase-basics`, Firestore and Authentication skills as those features are implemented. The installer’s current list may change.
 
-Use Node.js 22.12+ or a current Node.js 24 LTS release. Then start the UI:
+Use Node.js 24.12 or later. Then start the UI:
 
 ```powershell
 npm run dev
