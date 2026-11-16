@@ -1,0 +1,41 @@
+name: Import prepared RELAY starter
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".relay-import.zip.b64"
+
+permissions:
+  contents: write
+
+jobs:
+  import-starter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Extract prepared starter
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! -f .relay-import.zip.b64 ]]; then
+            echo "No starter archive found; nothing to import."
+            exit 0
+          fi
+          base64 --decode .relay-import.zip.b64 > /tmp/relay-starter.zip
+          unzip -q /tmp/relay-starter.zip -d /tmp/relay-starter
+          cp -a /tmp/relay-starter/relay-by-asivaro-starter/. .
+          rm -f .relay-import.zip.b64
+          rm -f .github/workflows/relay-import.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No source changes to commit."
+            exit 0
+          fi
+          git commit -m "Import RELAY Cloud Lab starter"
+          git push
