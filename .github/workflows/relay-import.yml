@@ -28,7 +28,6 @@ jobs:
           unzip -q /tmp/relay-starter.zip -d /tmp/relay-starter
           cp -a /tmp/relay-starter/relay-by-asivaro-starter/. .
           rm -f .relay-import.part01 .relay-import.part02 .relay-import.part03 .relay-import.part04 .relay-import.part05 .relay-import.ready
-          rm -f .github/workflows/relay-import.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
