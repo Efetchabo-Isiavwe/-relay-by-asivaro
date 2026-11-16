@@ -8,7 +8,7 @@ RELAY turns field observations into structured, reviewable operational records. 
 
 ## 0. Cloud-first zero-cost setup
 
-Use the prepared GitHub Codespaces environment instead of installing a full toolchain on the HP laptop. Read [`docs/CLOUD-LAB-ZERO-COST.md`](docs/CLOUD-LAB-ZERO-COST.md) before creating a Codespace. The repository includes a Dev Container, a private noVNC desktop port, Chrome installation/launch scripts for a temporary on-device AI experiment, and a public-repository CI workflow. No cloud resource is provisioned by downloading this archive.
+Use the prepared GitHub Codespaces environment instead of installing a full toolchain on the HP laptop. Read [`docs/CLOUD-LAB-ZERO-COST.md`](docs/CLOUD-LAB-ZERO-COST.md) before creating a Codespace. The repository includes a lightweight Dev Container using the default Codespaces base image, Node.js 24, a private Vite preview port and a public-repository CI workflow. No cloud resource is provisioned simply by opening the repository.
 
 **Spending rule:** keep GitHub Codespaces within the personal Free allowance, keep Firebase on Spark, do not link a Cloud Billing account, and do not activate paid infrastructure without explicit approval.
 
@@ -46,12 +46,12 @@ Open the local URL shown by Vite (normally http://localhost:5173) in Chrome.
 
 ## 2. Create and configure Firebase
 
-1. Open https://console.firebase.google.com/ and create a project named `-relay-by-asivaro` (or another available project ID).
-2. Add a **Web app** to the Firebase project and copy its Firebase web configuration. Suggested Google Cloud project ID: `relay-by-asivaro-2026` (the ID must be globally available; if already taken, add a short suffix). Do not use the GitHub repository name as the Google Cloud project ID because it begins with a hyphen.
-3. In Firebase Console, open **AI Services → AI Logic → Get started**.
-4. Select the **Gemini Developer API** for the initial hackathon implementation and complete the guided setup.
-5. Confirm Firebase AI Logic is enforced in **Security → App Check → APIs**.
-6. Keep Firebase App Check enforced for Firebase AI Logic. For this pre-production Codespaces test, RELAY uses the App Check debug-token flow, so you do not need to create a reCAPTCHA site key. The placeholder in `.env.example` may remain unchanged. Production release will require a real attestation provider.
+1. Open https://console.firebase.google.com/ and create a project named **RELAY by ASIVARO**.
+2. Suggested Google Cloud project ID: `relay-by-asivaro-2026`. If unavailable, append a short suffix. Google Cloud project IDs must begin with a lowercase letter, so do not use the GitHub repository name (which begins with a hyphen).
+3. Add a **Web app** to the Firebase project and copy its Firebase web configuration.
+4. In Firebase Console, open **AI Services → AI Logic → Get started**.
+5. Select the **Gemini Developer API** for the initial hackathon implementation and complete the guided setup.
+6. Keep Firebase AI Logic App Check enforcement enabled. For this pre-production Codespaces test, RELAY uses the App Check debug-token flow, so you do not need to create a reCAPTCHA site key. The placeholder in `.env.example` may remain unchanged. Production release will require a real attestation provider.
 7. Copy `.env.example` to `.env.local` and fill in the Firebase web config values. Leave `VITE_RECAPTCHA_V3_SITE_KEY` as the placeholder for local development.
 8. Restart the Vite dev server after changing environment variables.
 9. Open the app in Chrome and press **Prepare local AI**. The debug token appears in Chrome DevTools Console. Safelist it under **Security → App Check → Apps → Manage debug tokens** in Firebase Console. Never commit or share that token.
@@ -119,9 +119,9 @@ To open the cloud development environment:
 3. Choose the smallest machine type that GitHub explicitly shows as covered by your remaining included usage. Prefer 2 cores for the first Codespace.
 4. Before creating it, confirm GitHub shows the machine is covered by included usage. Do not select paid overages or a paid machine.
 5. Wait for the Dev Container setup to finish. The RELAY web preview is forwarded on port 5173.
-6. The remote Chrome desktop is exposed on private port 6080 only for a temporary local-AI experiment.
+6. This lightweight Codespace forwards only the RELAY web preview on private port 5173. Remote Chrome desktop testing is deferred to a separate experiment.
 
-If a suitable 4-core / 16-GB Codespace is not within your included allowance, do not create it. Keep developing in the smaller environment and defer the Chrome local-model experiment until a free/approved environment is available.
+The first Codespace is only for web development and Firebase cloud inference. Chrome local-model verification needs a supported Chrome desktop/device with sufficient resources; we will evaluate that separately rather than create a larger Codespace now.
 
 ## 8. Android and iOS follow-on
 
