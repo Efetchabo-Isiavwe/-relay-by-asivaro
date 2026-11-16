@@ -7,12 +7,7 @@
 
 ## What this configuration does
 
-This repository contains a Codespaces Dev Container with Node.js 22 and a lightweight noVNC desktop (`desktop-lite`). It forwards two private ports:
-
-- `5173`: Vite web preview
-- `6080`: remote Linux desktop accessible in a browser through noVNC
-
-The default Codespace machine should be the smallest available machine suitable for editing and web development. Use a larger machine only for a short, deliberate Chrome local-model experiment.
+This repository contains a lightweight Codespaces Dev Container using the default base image, Node.js 24.12 and a single private Vite preview port (`5173`). It does not automatically start a remote desktop or Android/iOS emulator. The default Codespace should be the smallest machine GitHub explicitly shows as covered by your remaining included usage.
 
 ## Important free-quota limits
 
@@ -40,24 +35,19 @@ A 2-core, 8 GB RAM, 32 GB storage machine is a more economical default for devel
 
 Budget controls and included-use alerts are account settings. This project does not change them automatically.
 
-## Create the dedicated repository
+## Dedicated repository
 
-RELAY must remain separate from other ASIVARO projects.
+The RELAY repository already exists and contains the prepared source:
 
-1. Go to <https://github.com/new> while signed in as the personal GitHub account.
-2. Repository name: `-relay-by-asivaro`.
-3. Description: `Operational Intelligence & Continuity Network — ASIVARO CONCEPTS #BuildHybridAI 2026 entry`.
-4. Select **Public** (the hackathon asks for a public source repository).
-5. Do not initialise it with a README, `.gitignore`, or licence; this starter already includes those files.
-6. Create the repository. Then provide its URL so the initial project files can be transferred into it.
+<https://github.com/Efetchabo-Isiavwe/-relay-by-asivaro>
 
-No repository is created by this configuration archive.
+It is public and separate from other ASIVARO projects.
 
 ## Launch the cloud development environment
 
 1. Open the new repository on GitHub.
 2. Select **Code → Codespaces → Create codespace on main**.
-3. Select the smallest machine type available for normal development. Prefer 2 cores / 8 GB RAM / 32 GB storage if listed.
+3. Select the smallest machine type GitHub explicitly shows as covered by your remaining included usage. Prefer 2 cores for this first web-development environment.
 4. Wait for the dev container to finish. `postCreateCommand` runs `npm install`.
 5. Start the web app in the terminal:
 
@@ -67,45 +57,24 @@ No repository is created by this configuration archive.
 
 6. Open the forwarded private port `5173` to use the RELAY preview.
 
-The Dev Container starts `desktop-lite` and forwards port `6080`, but Chrome is not installed automatically. This avoids installing a large browser until the local-model test is actually needed.
+The first Codespace forwards only port `5173`. It is intentionally kept lightweight.
 
-## Temporary Chrome local-model test
+## Chrome local-model test (later)
 
-Only do this after reviewing available included quota and confirming no paid usage can occur.
+The normal Codespaces preview is opened in the browser on your HP EliteBook. In that arrangement, Chrome Prompt API inference executes on the HP laptop, not inside Codespaces. Your current laptop has 8 GB RAM, below Chrome's documented 16 GB CPU-inference requirement. Therefore, do not expect the first Codespace to prove `ON_DEVICE` inference.
 
-1. In the Codespace menu, choose **Change machine type**.
-2. If available within the remaining included allowance, select 4 cores / 16 GB RAM / 64 GB storage. If that type is unavailable, do not pick a paid option.
-3. Rebuild/restart the Codespace if GitHub requests it.
-4. Install Chrome:
-
-   ```bash
-   bash scripts/install-chrome-codespace.sh
-   ```
-
-5. Start Chrome in the remote desktop:
-
-   ```bash
-   bash scripts/start-chrome-codespace.sh
-   ```
-
-6. Open the Codespaces **Ports** panel and select the private forwarded port `6080`. Open it in a browser, click **Connect**, and enter the desktop password configured in `.devcontainer/devcontainer.json` (`vscode` by default).
-7. In the remote Chrome session, open `chrome://on-device-internals` and review model readiness and free disk space. Then open the RELAY preview on port `5173` from that same remote Chrome session.
-8. Use the app's **Prepare local AI** control and then **Analyse observation**. A local demonstration is valid only when Firebase AI Logic's real response metadata reports `ON_DEVICE`. `IN_CLOUD` is a cloud fallback, not proof of local execution.
-9. Stop the Codespace as soon as the experiment is complete. Do not leave a 64 GB Codespace stored for days unnecessarily.
-
-### Limitations
-
-Chrome's Prompt API documentation lists Linux as supported and specifies at least 22 GB free on the Chrome-profile volume plus either a CPU with at least 16 GB RAM and 4 CPU cores or a GPU with strictly more than 4 GB VRAM. A Codespace can meet the listed virtual machine specifications, but virtualised hardware, browser rollout, model eligibility and Chrome's device checks can still prevent local model availability. This setup is an experiment to verify, not a guarantee. Never spoof the inference source.
+We will evaluate a separate supported desktop or device environment later. A forwarded URL by itself does not move Chrome's local model execution into the cloud. A local-inference claim is valid only when Firebase AI Logic's response metadata actually reports `ON_DEVICE`.
 
 ## Firebase free-tier configuration
 
-1. Create or use the Firebase project with the **Spark** plan.
-2. Do not link a Google Cloud Billing account and do not upgrade to Blaze.
-3. Enable Firebase AI Logic with the **Gemini Developer API** provider.
-4. Keep the model set to `gemini-4-hydrogen`, which Firebase currently marks as billing-not-required.
-5. Configure Firebase App Check for the web application using reCAPTCHA v3. App Check enforcement for Firebase AI Logic is required.
-6. Use only synthetic demo observations while using the Gemini Developer API free tier. Do not submit confidential customer, employee, security, facility or operational information.
-7. Do not enable Cloud Storage, Cloud Functions, App Hosting, phone/SMS authentication or other services that require a billing upgrade. The current starter's Firestore and Storage rules deny access until safe organisation-scoped rules are implemented.
+1. Create Firebase project named **RELAY by ASIVARO**. Suggested project ID: `relay-by-asivaro-2026`; if unavailable, append a short suffix. Project IDs must start with a lowercase letter, so do not use the GitHub repository name which begins with a hyphen.
+2. Skip Google Analytics.
+3. Keep the project on the **Spark** plan. Do not link a Google Cloud Billing account or upgrade to Blaze.
+4. Add a Web app named `RELAY Web` and copy its Firebase web config.
+5. Enable Firebase AI Logic using the **Gemini Developer API** provider.
+6. Keep Firebase AI Logic App Check enforcement enabled. This pre-production app uses the App Check debug-token flow; a reCAPTCHA site key is not needed for this development test.
+7. Use only synthetic demo observations while using the Gemini Developer API free tier. Do not submit confidential customer, employee, security, facility or operational information.
+8. Do not enable Cloud Storage, Cloud Functions, App Hosting, phone/SMS authentication or other services that require a billing upgrade. The current starter's Firestore and Storage rules deny access until safe organisation-scoped rules are implemented.
 
 Firebase AI Logic itself is free, but model pricing and Firebase plan requirements depend on provider and model. The Gemini Developer API free tier does not require a payment method and keeps the project on Spark. Some other models and features require billing. Never link billing for this project without explicit approval.
 
